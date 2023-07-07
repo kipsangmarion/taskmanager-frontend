@@ -44,6 +44,8 @@ dependencies:
   intl:
   animated_login:
   bloc:
+  dio:
+  get_it:
   flutter_bloc:
   equatable:
   fluttertoast:
