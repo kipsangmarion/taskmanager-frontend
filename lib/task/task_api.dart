@@ -1,0 +1,34 @@
+import 'package:taskmanager_frontend/models/task/task_model.dart';
+import 'package:taskmanager_frontend/network/api/endpoints.dart';
+import 'package:taskmanager_frontend/network/dio_client.dart';
+
+class TaskAPis {
+  TaskAPis(this.dioClient);
+
+  final DioClient dioClient;
+
+  Future<Map<String, dynamic>?> createTask(
+      TaskModel? taskModel,
+      ) async {
+    final response = await dioClient.post(Endpoints.task, data: taskModel?.toJson());
+    return response;
+  }
+
+  Future<Map<String, dynamic>?> getTask(
+
+      ) async {
+    final response = await dioClient.get(
+      Endpoints.task,
+    );
+    return response;
+  }
+
+  Future<Map<String, dynamic>?> retrieveSpecificTask(
+      int? task,
+      ) async {
+    final response = await dioClient.get(
+      '${Endpoints.task}$task',
+    );
+    return response;
+  }
+}

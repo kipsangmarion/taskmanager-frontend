@@ -18,7 +18,7 @@ class Endpoints {
   static const String logout = 'taskmaster/logout/';
   static const String logoutAll = 'taskmaster/logout_all/';
 
-  static const String userProfile = 'taskmaster/userprofile/';
+  static const String userprofile = 'taskmaster/userprofile/';
   static const String task = 'taskmaster/task/';
   static const String activity = 'taskmaster/activity/';
   static const String comment = 'taskmaster/comment';

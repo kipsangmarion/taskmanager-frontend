@@ -53,6 +53,7 @@ dependencies:
   date_time_picker:
   json_annotation:
   url_launcher:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
