@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:taskmanager_frontend/user_profile/user_profile_api.dart';
 import 'package:taskmanager_frontend/models/paginated/links.dart';
 import 'package:taskmanager_frontend/models/paginated/paginated_model.dart';
@@ -18,8 +20,14 @@ class UserProfileRepository {
     );
   }
 
-  Future<UserProfileModel>? createUserProfile(String? userprofile) async {
-    final response = await userprofileAPis.createUserProfile(userprofile);
+  Future<UserProfileModel>? createUserProfile({
+    UserProfileModel? userprofile,
+    required File file,
+  }) async {
+    final response = await userprofileAPis.createUserProfile(
+      userProfileModel: userprofile,
+      file: file,
+    );
     return UserProfileModel.fromJson(response?['data'] as Map<String, dynamic>);
   }
 }

@@ -2,6 +2,8 @@ import 'package:taskmanager_frontend/models/comment/comment_model.dart';
 import 'package:taskmanager_frontend/network/api/endpoints.dart';
 import 'package:taskmanager_frontend/network/dio_client.dart';
 
+import '../models/paginated/paginated_model.dart';
+
 class CommentAPis {
   CommentAPis(this.dioClient);
 
@@ -14,11 +16,12 @@ class CommentAPis {
     return response;
   }
 
-  Future<Map<String, dynamic>?> getComment(
-
-      ) async {
-    final response = await dioClient.get(
-      Endpoints.comment,
+  Future<Map<String, dynamic>?> retrieveComments({
+    int? activity,
+    int? task,
+  }) async {
+    final response = await dioClient.get(Endpoints.comment,
+        queryParameters: {'activity': activity, 'task': task}
     );
     return response;
   }

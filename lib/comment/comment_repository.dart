@@ -7,8 +7,8 @@ class CommentRepository {
   CommentRepository(this.commentAPis);
   final CommentAPis commentAPis;
 
-  Future<PaginatedModel<CommentModel>>? getComment() async {
-    final response = await commentAPis.getComment();
+  Future<PaginatedModel<CommentModel>>? retrieveComments() async {
+    final response = await commentAPis.retrieveComments();
     return PaginatedModel(
       lastPage: response?['data']['last_page'] as int,
       links: Links.fromJson(response?['data']['links'] as Map<String, dynamic>),
