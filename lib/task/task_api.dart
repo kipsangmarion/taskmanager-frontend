@@ -14,7 +14,7 @@ class TaskAPis {
     return response;
   }
 
-  Future<Map<String, dynamic>?> getTask(
+  Future<Map<String, dynamic>?> getTasks(
 
       ) async {
     final response = await dioClient.get(
@@ -29,6 +29,20 @@ class TaskAPis {
     final response = await dioClient.get(
       '${Endpoints.task}$task',
     );
+    return response;
+  }
+
+  Future<Map<String, dynamic>?> updateTask(
+      TaskModel? taskModel,
+      ) async {
+    final response = await dioClient.put('${Endpoints.task}${taskModel?.id}', data: taskModel?.toJson());
+    return response;
+  }
+
+  Future<Map<String, dynamic>?> deleteTask(
+      TaskModel? taskModel,
+      ) async {
+    final response = await dioClient.delete('${Endpoints.task}${taskModel?.id}', data: taskModel?.toJson());
     return response;
   }
 }

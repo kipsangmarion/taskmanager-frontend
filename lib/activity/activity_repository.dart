@@ -7,8 +7,8 @@ class ActivityRepository {
   ActivityRepository(this.activityAPis);
   final ActivityAPis activityAPis;
 
-  Future<PaginatedModel<ActivityModel>>? getActivity() async {
-    final response = await activityAPis.getActivity();
+  Future<PaginatedModel<ActivityModel>>? getActivities() async {
+    final response = await activityAPis.getActivities();
     return PaginatedModel(
       lastPage: response?['data']['last_page'] as int,
       links: Links.fromJson(response?['data']['links'] as Map<String, dynamic>),
@@ -20,6 +20,21 @@ class ActivityRepository {
 
   Future<ActivityModel>? createActivity(ActivityModel? activityModel) async {
     final response = await activityAPis.createActivity(activityModel);
+    return ActivityModel.fromJson(response?['data'] as Map<String, dynamic>);
+  }
+
+  Future<ActivityModel>? updateActivity(ActivityModel? activityModel) async {
+    final response = await activityAPis.updateActivity(activityModel);
+    return ActivityModel.fromJson(response?['data'] as Map<String, dynamic>);
+  }
+
+  Future<ActivityModel>? deleteActivity(ActivityModel? activityModel) async {
+    final response = await activityAPis.deleteActivity(activityModel);
+    return ActivityModel.fromJson(response?['data'] as Map<String, dynamic>);
+  }
+
+  Future<ActivityModel>? retrieveSpecificActivity(int? activity) async {
+    final response = await activityAPis.retrieveSpecificActivity(activity);
     return ActivityModel.fromJson(response?['data'] as Map<String, dynamic>);
   }
 }

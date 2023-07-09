@@ -7,8 +7,8 @@ class TaskRepository {
   TaskRepository(this.taskAPis);
   final TaskAPis taskAPis;
 
-  Future<PaginatedModel<TaskModel>>? getTask() async {
-    final response = await taskAPis.getTask();
+  Future<PaginatedModel<TaskModel>>? getTasks() async {
+    final response = await taskAPis.getTasks();
     return PaginatedModel(
       lastPage: response?['data']['last_page'] as int,
       links: Links.fromJson(response?['data']['links'] as Map<String, dynamic>),
@@ -20,6 +20,21 @@ class TaskRepository {
 
   Future<TaskModel>? createTask(TaskModel? taskModel) async {
     final response = await taskAPis.createTask(taskModel);
+    return TaskModel.fromJson(response?['data'] as Map<String, dynamic>);
+  }
+
+  Future<TaskModel>? updateTask(TaskModel? taskModel) async {
+    final response = await taskAPis.updateTask(taskModel);
+    return TaskModel.fromJson(response?['data'] as Map<String, dynamic>);
+  }
+
+  Future<TaskModel>? deleteTask(TaskModel? taskModel) async {
+    final response = await taskAPis.deleteTask(taskModel);
+    return TaskModel.fromJson(response?['data'] as Map<String, dynamic>);
+  }
+
+  Future<TaskModel>? retrieveSpecificTask(int? task) async {
+    final response = await taskAPis.retrieveSpecificTask(task);
     return TaskModel.fromJson(response?['data'] as Map<String, dynamic>);
   }
 }
