@@ -1,4 +1,4 @@
-
+# taskmanager
 taskmanager is a Flutter application that provides a user-friendly interface for managing tasks, activities, comments, and user profiles. The application utilizes the APIs provided by the [taskmanager](https://github.com/kipsangmarion/taskmanager) Django project. It implements the Dio package for making API calls and follows the BLoC pattern for state management.
 
 ## Features
