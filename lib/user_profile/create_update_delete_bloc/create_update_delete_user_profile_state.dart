@@ -15,9 +15,8 @@ class CreateUpdateDeleteUserProfileLoading extends CreateUpdateDeleteUserProfile
 
 class CreateUpdateDeleteUserProfileSuccess extends CreateUpdateDeleteUserProfileState {
   final UserProfileModel? userProfileModel;
-  final File? file;
 
-  const CreateUpdateDeleteUserProfileSuccess(this.userProfileModel, this.file);
+  const CreateUpdateDeleteUserProfileSuccess(this.userProfileModel);
 }
 
 class CreateUpdateDeleteUserProfileError extends CreateUpdateDeleteUserProfileState {

@@ -17,7 +17,8 @@ class CreateUpdateDeleteActivityBloc extends Bloc<CreateUpdateDeleteActivityEven
         emit.call(CreateUpdateDeleteActivityLoading());
         final activity = await _activityRepository.createActivity(event.activity);
         emit.call(CreateUpdateDeleteActivitySuccess(activity));
-      } catch (e) {
+      }
+      catch (e) {
         emit.call(CreateUpdateDeleteActivityError(e.toString()));
       }
     });

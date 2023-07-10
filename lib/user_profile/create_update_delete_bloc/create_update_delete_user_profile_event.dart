@@ -8,29 +8,27 @@ abstract class CreateUpdateDeleteUserProfileEvent extends Equatable {
 }
 
 class CreateUserProfile extends CreateUpdateDeleteUserProfileEvent {
-  final UserProfileModel? userProfileModel;
-  final File? file;
+  final UserProfileModel? userProfile;
+  final File file;
 
-  const CreateUserProfile(this.userProfileModel, this.file);
+  const CreateUserProfile({this.userProfile, required this.file});
 }
 
 class UpdateUserProfile extends CreateUpdateDeleteUserProfileEvent {
-  final UserProfileModel? userProfileModel;
-  final File? file;
+  final UserProfileModel? userProfile;
+  final File file;
 
-  const UpdateUserProfile(this.userProfileModel, this.file);
+  const UpdateUserProfile({this.userProfile, required this.file});
 }
 
 class DeleteUserProfile extends CreateUpdateDeleteUserProfileEvent {
-  final UserProfileModel? userProfileModel;
-  final File? file;
+  final UserProfileModel? userProfile;
 
-  const DeleteUserProfile(this.userProfileModel, this.file);
+  const DeleteUserProfile(this.userProfile);
 }
 
 class RetrieveIndividualUserProfile extends CreateUpdateDeleteUserProfileEvent {
-  final UserProfileModel? userProfileModel;
-  final File? file;
+  final int? userProfile;
 
-  const RetrieveIndividualUserProfile(this.userProfileModel, this.file);
+  const RetrieveIndividualUserProfile(this.userProfile);
 }

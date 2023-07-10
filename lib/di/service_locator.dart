@@ -19,25 +19,13 @@ Future<void> setup() async {
     ..registerSingleton(Dio())
     ..registerSingleton(DioClient(getIt<Dio>()))
     ..registerSingleton(AuthAPis(getIt<DioClient>()))
-    ..registerSingleton(AuthRepository(getIt.get<AuthAPis>()));
-  getIt
-    ..registerSingleton(Dio())
-    ..registerSingleton(DioClient(getIt<Dio>()))
+    ..registerSingleton(AuthRepository(getIt.get<AuthAPis>()))
     ..registerSingleton(TaskAPis(getIt<DioClient>()))
-    ..registerSingleton(TaskRepository(getIt.get<TaskAPis>()));
-  getIt
-    ..registerSingleton(Dio())
-    ..registerSingleton(DioClient(getIt<Dio>()))
+    ..registerSingleton(TaskRepository(getIt.get<TaskAPis>()))
     ..registerSingleton(ActivityAPis(getIt<DioClient>()))
-    ..registerSingleton(ActivityRepository(getIt.get<ActivityAPis>()));
-  getIt
-    ..registerSingleton(Dio())
-    ..registerSingleton(DioClient(getIt<Dio>()))
+    ..registerSingleton(ActivityRepository(getIt.get<ActivityAPis>()))
     ..registerSingleton(CommentAPis(getIt<DioClient>()))
-    ..registerSingleton(CommentRepository(getIt.get<CommentAPis>()));
-  getIt
-    ..registerSingleton(Dio())
-    ..registerSingleton(DioClient(getIt<Dio>()))
+    ..registerSingleton(CommentRepository(getIt.get<CommentAPis>()))
     ..registerSingleton(UserProfileAPis(getIt<DioClient>()))
     ..registerSingleton(UserProfileRepository(getIt.get<UserProfileAPis>()));
 }
