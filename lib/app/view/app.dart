@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taskmanager_frontend/activity/activity_repository.dart';
+import 'package:taskmanager_frontend/activity/create_update_delete_bloc/create_update_delete_activity_bloc.dart';
+import 'package:taskmanager_frontend/activity/retrieve_activities_bloc/retrieve_activities_bloc.dart';
 import 'package:taskmanager_frontend/auth/auth_bloc/auth_bloc.dart';
 import 'package:taskmanager_frontend/auth/auth_repository.dart';
 import 'package:taskmanager_frontend/auth/auth_status/auth_status_bloc.dart';
+import 'package:taskmanager_frontend/comment/comment_repository.dart';
+import 'package:taskmanager_frontend/comment/create_update_delete_bloc/create_update_delete_comment_bloc.dart';
+import 'package:taskmanager_frontend/comment/retrieve_comments/retrieve_comments_bloc.dart';
 import 'package:taskmanager_frontend/di/service_locator.dart';
 import 'package:taskmanager_frontend/home/root_screen.dart';
 import 'package:taskmanager_frontend/l10n/l10n.dart';
+import 'package:taskmanager_frontend/task/create_update_delete_bloc/create_update_delete_task_bloc.dart';
+import 'package:taskmanager_frontend/task/retrieve_tasks_bloc/retrieve_tasks_bloc.dart';
+import 'package:taskmanager_frontend/task/task_repository.dart';
+import 'package:taskmanager_frontend/user_profile/create_update_delete_bloc/create_update_delete_user_profile_bloc.dart';
+import 'package:taskmanager_frontend/user_profile/user_profile_repository.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -22,6 +33,34 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => AuthStatusBloc(),
         ),
+        BlocProvider(
+          create: (context) =>
+              CreateUpdateDeleteTaskBloc(taskRepository: getIt<TaskRepository>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              RetrieveTasksBloc(taskRepository: getIt<TaskRepository>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              CreateUpdateDeleteActivityBloc(activityRepository: getIt<ActivityRepository>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              RetrieveActivitiesBloc(activityRepository: getIt<ActivityRepository>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              CreateUpdateDeleteCommentBloc(commentRepository: getIt<CommentRepository>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              RetrieveCommentsBloc(commentRepository: getIt<CommentRepository>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              CreateUpdateDeleteUserProfileBloc(userProfileRepository: getIt<UserProfileRepository>()),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -30,8 +69,8 @@ class App extends StatelessWidget {
             accentColor: const Color(0xFF13B9FF),
           ),
         ),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
+        //localizationsDelegates: AppLocalizations.localizationsDelegates,
+        //supportedLocales: AppLocalizations.supportedLocales,
         home: const RootScreen(),
       ),
     );

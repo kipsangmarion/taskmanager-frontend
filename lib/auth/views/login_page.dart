@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
                   }
                   return null;
                 },
-                decoration: const InputDecoration(label: Text('USername')),
+                decoration: const InputDecoration(label: Text('Username')),
               ),
               const SizedBox(
                 height: 10,
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                   }
                   return null;
                 },
-                decoration: const InputDecoration(label: Text('Passowrd')),
+                decoration: const InputDecoration(label: Text('Password')),
               ),
               const SizedBox(
                 height: 12,
