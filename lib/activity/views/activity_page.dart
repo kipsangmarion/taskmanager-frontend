@@ -39,17 +39,26 @@ class _ActivityPageState extends State<ActivityPage> {
     });
   }
 
+  // void navigateToCommentPage() {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => CommentPage(),
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Activity'),
+        title: const Text('Activity'),
       ),
       body: BlocProvider(
         create: (context) => CreateUpdateDeleteActivityBloc(activityRepository: getIt<ActivityRepository>()),
         child: BlocConsumer<CreateUpdateDeleteActivityBloc, CreateUpdateDeleteActivityState>(
           listener: (context, state) {
-            if (state is ActivitySaved) {
+            if (state is CreateUpdateDeleteActivitySuccess) {
               setState(() {
                 isEditMode = false;
               });

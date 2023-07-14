@@ -35,30 +35,6 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>
-              CreateUpdateDeleteTaskBloc(taskRepository: getIt<TaskRepository>()),
-        ),
-        BlocProvider(
-          create: (context) =>
-              RetrieveTasksBloc(taskRepository: getIt<TaskRepository>()),
-        ),
-        BlocProvider(
-          create: (context) =>
-              CreateUpdateDeleteActivityBloc(activityRepository: getIt<ActivityRepository>()),
-        ),
-        BlocProvider(
-          create: (context) =>
-              RetrieveActivitiesBloc(activityRepository: getIt<ActivityRepository>()),
-        ),
-        BlocProvider(
-          create: (context) =>
-              CreateUpdateDeleteCommentBloc(commentRepository: getIt<CommentRepository>()),
-        ),
-        BlocProvider(
-          create: (context) =>
-              RetrieveCommentsBloc(commentRepository: getIt<CommentRepository>()),
-        ),
-        BlocProvider(
-          create: (context) =>
               CreateUpdateDeleteUserProfileBloc(userProfileRepository: getIt<UserProfileRepository>()),
         ),
       ],

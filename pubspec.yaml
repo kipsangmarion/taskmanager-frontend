@@ -54,6 +54,7 @@ dependencies:
   json_annotation:
   url_launcher:
   shared_preferences:
+  image_picker:
   flutter_localizations:
     sdk: flutter
 
