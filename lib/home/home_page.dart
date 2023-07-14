@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:taskmanager_frontend/task/create_update_delete_bloc/create_update_delete_task_bloc.dart';
 import 'package:taskmanager_frontend/task/retrieve_tasks_bloc/retrieve_tasks_bloc.dart';
-import 'package:taskmanager_frontend/user_profile/views/user_profile_page';
+import 'package:taskmanager_frontend/user_profile/views/user_profile_page.dart';
 import 'package:taskmanager_frontend/task/views/task_page.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // Retrieve tasks on page load
     final retrieveTasksBloc = BlocProvider.of<RetrieveTasksBloc>(context);
-    retrieveTasksBloc.add(RetrieveAllTasks());
+    retrieveTasksBloc.add(RetrieveUserTasks());
   }
 
   void navigateToUserProfilePage() {
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TaskPage(),
+        builder: (context) => const TaskPage(),
       ),
     );
   }
@@ -98,7 +99,8 @@ class _HomePageState extends State<HomePage> {
             return const Center(
               child: CircularProgressIndicator.adaptive(),
             );
-          } else if (state is RetrieveTasksSuccess) {
+          }
+          if (state is RetrieveTasksSuccess) {
 
             return ListView.builder(
               shrinkWrap: true,
@@ -120,7 +122,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           navigateToTaskPage();
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

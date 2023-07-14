@@ -1,28 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taskmanager_frontend/comment/comment_repository.dart';
 
 import 'package:taskmanager_frontend/comment/create_update_delete_bloc/create_update_delete_comment_bloc.dart';
 import 'package:taskmanager_frontend/comment/retrieve_comments/retrieve_comments_bloc.dart';
 import 'package:taskmanager_frontend/di/service_locator.dart';
+import 'package:taskmanager_frontend/models/comment/comment_model.dart';
 
 class CommentPage extends StatefulWidget {
+  const CommentPage({super.key});
+
   @override
-  _CommentPageState createState() => _CommentPageState();
+  State<CommentPage> createState() => _CommentPageState();
 }
 
 class _CommentPageState extends State<CommentPage> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController commentController = TextEditingController();
 
-  void createComment() {
-    final commentText = commentController.text;
-
-    final createUpdateDeleteCommentBloc =
-    BlocProvider.of<CreateUpdateDeleteCommentBloc>(context);
-    createUpdateDeleteCommentBloc.add(
-      CreateComment(comment: commentText),
+  void saveComment() {
+    BlocProvider.of<CreateUpdateDeleteCommentBloc>(context).add(
+        CreateComment(CommentModel(
+          content: commentController.text,
+        ))
     );
+  }
 
+  void createComment() {
+    saveComment();
     commentController.clear();
   }
 
@@ -44,13 +50,19 @@ class _CommentPageState extends State<CommentPage> {
         child: Column(
           children: [
             Expanded(
-              child: BlocBuilder<RetrieveCommentsBloc, RetrieveCommentsState>(
+              child: BlocConsumer<RetrieveCommentsBloc, RetrieveCommentsState>(
+                listener: (context,state){
+                  if(state is RetrieveCommentsError){
+                    Fluttertoast.showToast(msg: "an error has occurred");
+                  }
+                },
                 builder: (context, state) {
                   if (state is RetrieveCommentsLoading) {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator.adaptive(),
                     );
-                  } else if (state is RetrieveCommentsSuccess) {
+                  }
+                  if (state is RetrieveCommentsSuccess) {
 
                     return ListView.builder(
                       shrinkWrap: true,
@@ -69,24 +81,33 @@ class _CommentPageState extends State<CommentPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: commentController,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your comment...',
+              child: Form(
+                key: _formKey,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: commentController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Required';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          hintText: 'Enter your comment...',
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      createComment();
-                    },
-                    child: const Text('Submit'),
-                  ),
-                ],
+                    const SizedBox(width: 8.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        createComment();
+                      },
+                      child: const Text('Submit'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
