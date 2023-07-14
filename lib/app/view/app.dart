@@ -33,10 +33,6 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => AuthStatusBloc(),
         ),
-        BlocProvider(
-          create: (context) =>
-              CreateUpdateDeleteUserProfileBloc(userProfileRepository: getIt<UserProfileRepository>()),
-        ),
       ],
       child: MaterialApp(
         theme: ThemeData(

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskmanager_frontend/network/api/endpoints.dart';
 
 class DioClient {
@@ -19,6 +20,16 @@ class DioClient {
           responseHeader: true,
           responseBody: true,
         ),
+        InterceptorsWrapper(
+          onRequest: (options, handler) async {
+            final prefs = await SharedPreferences.getInstance();
+            final token = prefs.getString('access');
+            if(token?.isNotEmpty ?? false) {
+              options.headers["Authorization"] = "Bearer $token";
+            }
+            return handler.next(options);
+          }
+        )
       ]);
   }
   // dio instance
