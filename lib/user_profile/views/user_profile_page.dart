@@ -28,7 +28,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     }
   }
 
-  void updateUserProfile() {
+  void saveUserProfile() {
     BlocProvider.of<CreateUpdateDeleteUserProfileBloc>(context).add(
       CreateUserProfile(file: selectedImage)
     );
@@ -91,7 +91,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () {
-                    updateUserProfile();
+                    saveUserProfile();
                   },
                   child: const Text('Save'),
                 ),

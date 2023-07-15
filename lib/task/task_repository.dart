@@ -7,8 +7,8 @@ class TaskRepository {
   TaskRepository(this.taskAPis);
   final TaskAPis taskAPis;
 
-  Future<PaginatedModel<TaskModel>>? getTasks() async {
-    final response = await taskAPis.getTasks();
+  Future<PaginatedModel<TaskModel>>? getTasks(String? tag) async {
+    final response = await taskAPis.getTasks(tag);
     return PaginatedModel(
       lastPage: response?['data']['last_page'] as int,
       links: Links.fromJson(response?['data']['links'] as Map<String, dynamic>),

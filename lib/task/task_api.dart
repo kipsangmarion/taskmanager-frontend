@@ -15,10 +15,11 @@ class TaskAPis {
   }
 
   Future<Map<String, dynamic>?> getTasks(
-
+      String? tag
       ) async {
     final response = await dioClient.get(
       Endpoints.task,
+      queryParameters: {'tag': tag},
     );
     return response;
   }

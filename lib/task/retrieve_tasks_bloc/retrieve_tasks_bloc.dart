@@ -17,7 +17,7 @@ class RetrieveTasksBloc extends Bloc<RetrieveTasksEvent, RetrieveTasksState> {
     on<RetrieveUserTasks>((event, emit) async {
       try{
         emit.call(RetrieveTasksLoading());
-        final tasks = await _taskRepository.getTasks();
+        final tasks = await _taskRepository.getTasks(event.tag);
         emit.call(RetrieveTasksSuccess(tasks?.results));
       } on DioException catch(e){
         emit.call(RetrieveTasksError(e.toString()));

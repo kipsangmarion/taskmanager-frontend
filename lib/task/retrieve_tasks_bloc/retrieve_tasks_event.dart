@@ -7,4 +7,8 @@ abstract class RetrieveTasksEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class RetrieveUserTasks extends RetrieveTasksEvent{}
+class RetrieveUserTasks extends RetrieveTasksEvent{
+  final String? tag;
+
+  const RetrieveUserTasks({this.tag});
+}

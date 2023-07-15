@@ -20,14 +20,14 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // Retrieve tasks on page load
     final retrieveTasksBloc = BlocProvider.of<RetrieveTasksBloc>(context);
-    retrieveTasksBloc.add(RetrieveUserTasks());
+    retrieveTasksBloc.add(const RetrieveUserTasks());
   }
 
   void navigateToUserProfilePage() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserProfilePage(),
+        builder: (context) => const UserProfilePage(),
       ),
     );
   }
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   void filterTasksByTag(String tag) {
     final retrieveTasksBloc = BlocProvider.of<RetrieveTasksBloc>(context);
-    retrieveTasksBloc.add(RetrieveTasksByTag(tag));
+    retrieveTasksBloc.add(RetrieveUserTasks(tag: tag));
     Navigator.pop(context); // Close the drawer
   }
 
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: [
             const DrawerHeader(
-              child: Text('Drawer Header'),
+              child: Text('Taskmaster'),
             ),
             ListTile(
               title: const Text('User Profile'),
@@ -69,25 +69,25 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: const Text('Urgent and Important'),
               onTap: () {
-                filterTasksByTag('Urgent and Important');
+                filterTasksByTag('UI');
               },
             ),
             ListTile(
               title: const Text('Urgent but Not Important'),
               onTap: () {
-                filterTasksByTag('Urgent but Not Important');
+                filterTasksByTag('UNI');
               },
             ),
             ListTile(
               title: const Text('Not Urgent but Important'),
               onTap: () {
-                filterTasksByTag('Not Urgent but Important');
+                filterTasksByTag('NUI');
               },
             ),
             ListTile(
               title: const Text('Not Urgent and Not Important'),
               onTap: () {
-                filterTasksByTag('Not Urgent and Not Important');
+                filterTasksByTag('NUNI');
               },
             ),
           ],
