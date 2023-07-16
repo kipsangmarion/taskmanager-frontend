@@ -48,10 +48,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
             );
           }
           if (state is CreateUpdateDeleteUserProfileSuccess) {
-            final userProfile = state.userProfile;
+            final userProfile = state.userProfileModel;
 
             // Initialize text fields with user profile data
-            introductionController.text = userProfile.introduction;
+            introductionController.text = userProfile?.intro ?? '';
 
             return ListView(
               padding: const EdgeInsets.all(16.0),

@@ -42,8 +42,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void filterTasksByTag(String tag) {
-    final retrieveTasksBloc = BlocProvider.of<RetrieveTasksBloc>(context);
-    retrieveTasksBloc.add(RetrieveUserTasks(tag: tag));
+    BlocProvider.of<RetrieveTasksBloc>(context).add(RetrieveUserTasks(tag: tag));
     Navigator.pop(context); // Close the drawer
   }
 
