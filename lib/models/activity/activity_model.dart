@@ -12,7 +12,7 @@ class ActivityModel extends Equatable {
   final String? title;
   final String? desc;
   final String? status;
-  final int? hours;
+  final double? hours;
   final DateTime? created_at;
   final DateTime? updated_at;
   final String? content;
@@ -29,7 +29,7 @@ class ActivityModel extends Equatable {
     String? title,
     String? desc,
     String? status,
-    int? hours,
+    double? hours,
     DateTime? created_at,
     DateTime? updated_at,
     String? content,

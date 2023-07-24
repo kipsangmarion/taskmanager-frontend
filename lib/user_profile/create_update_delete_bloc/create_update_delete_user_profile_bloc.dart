@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:taskmanager_frontend/models/task/task_model.dart';
 import 'package:taskmanager_frontend/models/user_profile/user_profile_model.dart';
 import 'package:taskmanager_frontend/user_profile/user_profile_repository.dart';
 
@@ -49,7 +47,7 @@ class CreateUpdateDeleteUserProfileBloc extends Bloc<CreateUpdateDeleteUserProfi
     on<RetrieveIndividualUserProfile>((event, emit) async {
       try {
         emit.call(CreateUpdateDeleteUserProfileLoading());
-        final userProfile = await _userProfileRepository.retrieveSpecificUserProfile(event.userProfile);
+        final userProfile = await _userProfileRepository.retrieveCurrentUser();
         emit.call(CreateUpdateDeleteUserProfileSuccess(userProfile));
       } catch (e) {
         emit.call(CreateUpdateDeleteUserProfileError(e.toString()));

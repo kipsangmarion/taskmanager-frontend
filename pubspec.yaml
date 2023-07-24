@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts:
   font_awesome_flutter:
-  charts_flutter_new:
+
   fl_chart:
   step_progress_indicator:
   date_format:
@@ -50,13 +50,15 @@ dependencies:
   equatable:
   fluttertoast:
   timelines:
-  date_time_picker:
+  
   json_annotation:
   url_launcher:
   shared_preferences:
   image_picker:
   flutter_localizations:
     sdk: flutter
+  flutter_toastr: ^1.0.3
+  
 
 dev_dependencies:
   flutter_test:
@@ -64,8 +66,10 @@ dev_dependencies:
 
   build_runner:
   json_serializable:
+  flutter_gen:
   bloc_test:
   mocktail:
+  # mockito: ^5.4.2
   very_good_analysis:
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -84,7 +88,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-  generate: true
+  #generate: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:

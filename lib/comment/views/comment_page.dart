@@ -6,25 +6,54 @@ import 'package:taskmanager_frontend/comment/comment_repository.dart';
 import 'package:taskmanager_frontend/comment/create_update_delete_bloc/create_update_delete_comment_bloc.dart';
 import 'package:taskmanager_frontend/comment/retrieve_comments/retrieve_comments_bloc.dart';
 import 'package:taskmanager_frontend/di/service_locator.dart';
+import 'package:taskmanager_frontend/models/activity/activity_model.dart';
 import 'package:taskmanager_frontend/models/comment/comment_model.dart';
+import 'package:taskmanager_frontend/models/task/task_model.dart';
 
-class CommentPage extends StatefulWidget {
-  const CommentPage({super.key});
+class CommentPage extends StatelessWidget {
+  final ActivityModel? activityModel;
+  final TaskModel? taskModel;
+  const CommentPage({Key? key, this.taskModel, this.activityModel})
+      : super(key: key);
 
   @override
-  State<CommentPage> createState() => _CommentPageState();
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => CreateUpdateDeleteCommentBloc(
+              commentRepository: getIt<CommentRepository>()),
+        ),
+        BlocProvider(
+          create: (context) => RetrieveCommentsBloc(
+              commentRepository: getIt<CommentRepository>()),
+        ),
+      ],
+      child:
+          CommentPageView(activityModel: activityModel, taskModel: taskModel),
+    );
+  }
 }
 
-class _CommentPageState extends State<CommentPage> {
+class CommentPageView extends StatefulWidget {
+  const CommentPageView({super.key, this.taskModel, this.activityModel});
+  final ActivityModel? activityModel;
+  final TaskModel? taskModel;
+  @override
+  State<CommentPageView> createState() => _CommentPageViewState();
+}
+
+class _CommentPageViewState extends State<CommentPageView> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController commentController = TextEditingController();
 
   void saveComment() {
-    BlocProvider.of<CreateUpdateDeleteCommentBloc>(context).add(
-        CreateComment(CommentModel(
-          content: commentController.text,
-        ))
-    );
+    BlocProvider.of<CreateUpdateDeleteCommentBloc>(context)
+        .add(CreateComment(CommentModel(
+      task: widget.activityModel?.task ?? widget.taskModel?.id,
+      activity: widget.activityModel?.id,
+      content: commentController.text,
+    )));
   }
 
   void createComment() {
@@ -33,26 +62,36 @@ class _CommentPageState extends State<CommentPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getComments();
+  }
+
+  getComments() {
+    BlocProvider.of<RetrieveCommentsBloc>(context).add(RetrieveUserComments(
+        task: widget.activityModel?.task ?? widget.taskModel?.id,
+        activity: widget.activityModel?.id));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Comment Page'),
       ),
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider<CreateUpdateDeleteCommentBloc>(
-            create: (context) => CreateUpdateDeleteCommentBloc(commentRepository: getIt<CommentRepository>()),
-          ),
-          BlocProvider<RetrieveCommentsBloc>(
-            create: (context) => RetrieveCommentsBloc(commentRepository: getIt<CommentRepository>()),
-          ),
-        ],
+      body: BlocListener<CreateUpdateDeleteCommentBloc,
+          CreateUpdateDeleteCommentState>(
+        listener: (context, state) {
+          if (state is CreateUpdateDeleteCommentSuccess) {
+            getComments();
+          }
+        },
         child: Column(
           children: [
             Expanded(
               child: BlocConsumer<RetrieveCommentsBloc, RetrieveCommentsState>(
-                listener: (context,state){
-                  if(state is RetrieveCommentsError){
+                listener: (context, state) {
+                  if (state is RetrieveCommentsError) {
                     Fluttertoast.showToast(msg: "an error has occurred");
                   }
                 },
@@ -63,13 +102,12 @@ class _CommentPageState extends State<CommentPage> {
                     );
                   }
                   if (state is RetrieveCommentsSuccess) {
-
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: state.commentModel?.length,
                       itemBuilder: (context, index) {
                         return ListTile(
-                          title: Text(state.commentModel?[index].content?? ''),
+                          title: Text(state.commentModel?[index].content ?? ''),
                         );
                       },
                     );

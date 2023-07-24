@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:taskmanager_frontend/auth/views/login_page.dart';
 
 import 'package:taskmanager_frontend/task/retrieve_tasks_bloc/retrieve_tasks_bloc.dart';
+import 'package:taskmanager_frontend/task/views/task_details.dart';
+import 'package:taskmanager_frontend/user_profile/user_bloc/user_bloc.dart';
 import 'package:taskmanager_frontend/user_profile/views/user_profile_page.dart';
 import 'package:taskmanager_frontend/task/views/task_page.dart';
 
@@ -19,8 +23,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     // Retrieve tasks on page load
-    final retrieveTasksBloc = BlocProvider.of<RetrieveTasksBloc>(context);
-    retrieveTasksBloc.add(const RetrieveUserTasks());
+    BlocProvider.of<RetrieveTasksBloc>(context).add(const RetrieveUserTasks());
+    BlocProvider.of<UserBloc>(context).add(GetUserProfile());
   }
 
   void navigateToUserProfilePage() {
@@ -42,7 +46,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void filterTasksByTag(String tag) {
-    BlocProvider.of<RetrieveTasksBloc>(context).add(RetrieveUserTasks(tag: tag));
+    BlocProvider.of<RetrieveTasksBloc>(context)
+        .add(RetrieveUserTasks(tag: tag));
     Navigator.pop(context); // Close the drawer
   }
 
@@ -59,10 +64,36 @@ class _HomePageState extends State<HomePage> {
             const DrawerHeader(
               child: Text('Taskmaster'),
             ),
-            ListTile(
-              title: const Text('User Profile'),
-              onTap: () {
-                navigateToUserProfilePage();
+            BlocConsumer<UserBloc, UserState>(
+              listener: (context, state) {
+                if (state.profileStateStatus == ProfileStateStatus.failure) {
+                  Fluttertoast.showToast(msg: state.message ?? 'Error');
+                }
+              },
+              builder: (context, state) {
+                if (state.profileStateStatus == ProfileStateStatus.loading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                if (state.profileStateStatus == ProfileStateStatus.success) {
+                  return ListTile(
+                    onTap: () {
+                      navigateToUserProfilePage();
+                    },
+                    leading: const CircleAvatar(child: Icon(Icons.person)),
+                    subtitle: Text(state.userModel?.intro ?? ''),
+                    title: Text(
+                        "${state.userModel?.firstName} ${state.userModel?.lastName}"),
+                  );
+                }
+                return ListTile(
+                  title: const Text('User Profile'),
+                  onTap: () {
+                    navigateToUserProfilePage();
+                  },
+                );
               },
             ),
             ListTile(
@@ -89,6 +120,18 @@ class _HomePageState extends State<HomePage> {
                 filterTasksByTag('NUNI');
               },
             ),
+            ListTile(
+              title: const Text('Log Out'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              },
+            )
           ],
         ),
       ),
@@ -100,17 +143,25 @@ class _HomePageState extends State<HomePage> {
             );
           }
           if (state is RetrieveTasksSuccess) {
-
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: state.taskModel?.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
+            return SizedBox(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: state.taskModel?.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TaskDetailspage(
+                              taskModel: state.taskModel?[index]),
+                        ),
+                      );
+                    },
                     title: Text(state.taskModel?[index].title ?? ''),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           } else {
             return Container();

@@ -13,6 +13,7 @@ class RetrieveActivitiesInitial extends RetrieveActivitiesState {
 class RetrieveActivitiesLoading extends RetrieveActivitiesState {
 }
 
+class RetrieveActivitiesEmpty extends RetrieveActivitiesState {}
 class RetrieveActivitiesSuccess extends RetrieveActivitiesState {
   final List<ActivityModel>? activityModel;
 

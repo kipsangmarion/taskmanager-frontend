@@ -31,13 +31,14 @@ class UserProfileRepository {
     return UserProfileModel.fromJson(response?['data'] as Map<String, dynamic>);
   }
 
-  Future<UserProfileModel>? retrieveSpecificUserProfile(
-      int? userprofile
+  Future<UserProfileModel>? retrieveCurrentUser(
+      
       ) async {
-    final response = await userprofileAPis.retrieveSpecificUserProfile(
-      userprofile
+    final response = await userprofileAPis.retrieveCurrentUser(
+    
     );
-    return UserProfileModel.fromJson(response?['data'] as Map<String, dynamic>);
+    return UserProfileModel.fromJson(
+        response?['data']['results'][0] as Map<String, dynamic>);
   }
 
   Future<UserProfileModel>? updateUserProfile({

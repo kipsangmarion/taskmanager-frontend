@@ -10,18 +10,20 @@ import '../../models/comment/comment_model.dart';
 part 'retrieve_comments_event.dart';
 part 'retrieve_comments_state.dart';
 
-class RetrieveCommentsBloc extends Bloc<RetrieveCommentsEvent, RetrieveCommentsState> {
+class RetrieveCommentsBloc
+    extends Bloc<RetrieveCommentsEvent, RetrieveCommentsState> {
   RetrieveCommentsBloc({required CommentRepository commentRepository})
       : _commentRepository = commentRepository,
         super(RetrieveCommentsInitial()) {
-    on<RetrieveCommentsEvent>((event, emit) async{
-      try{
+    on<RetrieveUserComments>((event, emit) async {
+      try {
         emit.call(RetrieveCommentsLoading());
-        final comments = await _commentRepository.getComments();
+        final comments = await _commentRepository.getComments(
+            task: event.task, activity: event.activity);
         emit.call(RetrieveCommentsSuccess(comments?.results));
-      } on DioException catch(e){
+      } on DioException catch (e) {
         emit.call(RetrieveCommentsError(e.toString()));
-      } catch(e){
+      } catch (e) {
         emit.call(RetrieveCommentsError(e.toString()));
       }
     });

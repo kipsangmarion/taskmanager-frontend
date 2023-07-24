@@ -7,4 +7,8 @@ abstract class RetrieveActivitiesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class RetrieveUserActivities extends RetrieveActivitiesEvent{}
+class RetrieveUserActivities extends RetrieveActivitiesEvent {
+  final int? task;
+
+  const RetrieveUserActivities({this.task});
+}

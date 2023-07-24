@@ -46,6 +46,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit.call(AuthError(e.toString()));
       }
     });
+    on<LogoutUserEvent>((event, emit) async {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      emit.call(AuthLogoutSuccess());
+    });
   }
   final AuthRepository _authRepository;
 }

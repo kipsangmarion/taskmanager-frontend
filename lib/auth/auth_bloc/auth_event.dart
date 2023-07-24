@@ -18,3 +18,4 @@ class LoginUserEvent extends AuthEvent {
 
   final AuthModel? authModel;
 }
+class LogoutUserEvent extends AuthEvent {}

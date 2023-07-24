@@ -13,7 +13,7 @@ class TaskModel extends Equatable {
   final String? tag;
   final String? desc;
   final String? status;
-  final int? hours;
+  final double? hours;
   final DateTime? created_at;
   final DateTime? updated_at;
   final DateTime? planned_start_date;
@@ -35,7 +35,7 @@ class TaskModel extends Equatable {
     String? tag,
     String? desc,
     String? status,
-    int? hours,
+    double? hours,
     DateTime? created_at,
     DateTime? updated_at,
     DateTime? planned_start_date,

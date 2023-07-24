@@ -13,7 +13,7 @@ ActivityModel _$ActivityModelFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String?,
       desc: json['desc'] as String?,
       status: json['status'] as String?,
-      hours: json['hours'] as int?,
+      hours: (json['hours'] as num?)?.toDouble(),
       created_at: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),

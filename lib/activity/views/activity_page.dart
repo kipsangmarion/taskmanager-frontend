@@ -6,34 +6,52 @@ import 'package:taskmanager_frontend/activity/activity_repository.dart';
 import 'package:taskmanager_frontend/activity/create_update_delete_bloc/create_update_delete_activity_bloc.dart';
 import 'package:taskmanager_frontend/di/service_locator.dart';
 import 'package:taskmanager_frontend/models/activity/activity_model.dart';
+import 'package:taskmanager_frontend/models/task/task_model.dart';
+import 'package:taskmanager_frontend/user_profile/user_bloc/user_bloc.dart';
 
 import '../../comment/views/comment_page.dart';
 
-class ActivityPage extends StatefulWidget {
-  const ActivityPage({super.key});
-
+class ActivityPage extends StatelessWidget {
+  const ActivityPage({Key? key, required this.taskModel}) : super(key: key);
+  final TaskModel? taskModel;
   @override
-  State<ActivityPage> createState() => _ActivityPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CreateUpdateDeleteActivityBloc(
+          activityRepository: getIt<ActivityRepository>()),
+      child: ActivityPageView(taskModel: taskModel),
+    );
+  }
 }
 
-class _ActivityPageState extends State<ActivityPage> {
+class ActivityPageView extends StatefulWidget {
+  const ActivityPageView({super.key, this.taskModel});
+  final TaskModel? taskModel;
+  @override
+  State<ActivityPageView> createState() => _ActivityPageViewState();
+}
+
+class _ActivityPageViewState extends State<ActivityPageView> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController contentController = TextEditingController();
   TextEditingController hoursController = TextEditingController();
 
-  bool isEditMode = false;
+  bool isEditMode = true;
 
   void saveActivity() {
-    BlocProvider.of<CreateUpdateDeleteActivityBloc>(context).add(
-      CreateActivity(ActivityModel(
+    if (_formKey.currentState!.validate()) {
+      BlocProvider.of<CreateUpdateDeleteActivityBloc>(context)
+          .add(CreateActivity(ActivityModel(
         title: titleController.text,
+        status: 'NEW',
+        task: widget.taskModel?.id,
         desc: descriptionController.text,
         content: contentController.text,
-        hours: int.parse(hoursController.text),
-      ))
-    );
+        hours: double.parse(hoursController.text),
+      )));
+    }
   }
 
   void toggleEditMode() {
@@ -43,12 +61,18 @@ class _ActivityPageState extends State<ActivityPage> {
   }
 
   void navigateToCommentPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const CommentPage(),
-      ),
-    );
+    if (widget.taskModel != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CommentPage(
+            activityModel: ActivityModel(task: widget.taskModel?.id),
+          ),
+        ),
+      );
+    } else {
+      Fluttertoast.showToast(msg: 'Please create a task first');
+    }
   }
 
   @override
@@ -58,19 +82,25 @@ class _ActivityPageState extends State<ActivityPage> {
         title: const Text('Activity'),
       ),
       body: BlocProvider(
-        create: (context) => CreateUpdateDeleteActivityBloc(activityRepository: getIt<ActivityRepository>()),
-        child: BlocConsumer<CreateUpdateDeleteActivityBloc, CreateUpdateDeleteActivityState>(
+        create: (context) => CreateUpdateDeleteActivityBloc(
+            activityRepository: getIt<ActivityRepository>()),
+        child: BlocConsumer<CreateUpdateDeleteActivityBloc,
+            CreateUpdateDeleteActivityState>(
           listener: (context, state) {
             if (state is CreateUpdateDeleteActivitySuccess) {
-              setState(() {
-                isEditMode = false;
-              });
+              Fluttertoast.showToast(msg: "Success");
+              Navigator.of(context).pop();
             }
-            if (state is CreateUpdateDeleteActivityError){
+            if (state is CreateUpdateDeleteActivityError) {
               Fluttertoast.showToast(msg: "an error has occurred");
             }
           },
           builder: (context, state) {
+            if (state is CreateUpdateDeleteActivityLoading) {
+              return Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(

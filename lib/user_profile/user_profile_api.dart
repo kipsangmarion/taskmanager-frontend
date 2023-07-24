@@ -17,7 +17,7 @@ class UserProfileAPis {
     final response = await dioClient.post(Endpoints.userprofile,
         data: FormData.fromMap({
           'id': userProfileModel?.id,
-          'user': userProfileModel?.user,
+          'user': userProfileModel?.user_id,
           'intro': userProfileModel?.intro,
           if (file != null) 'image': await MultipartFile.fromFile(file.path),
         }));
@@ -31,11 +31,9 @@ class UserProfileAPis {
     return response;
   }
 
-  Future<Map<String, dynamic>?> retrieveSpecificUserProfile(
-      int? userprofile,
-      ) async {
+  Future<Map<String, dynamic>?> retrieveCurrentUser() async {
     final response = await dioClient.get(
-      '${Endpoints.userprofile}$userprofile',
+      Endpoints.userprofile,
     );
     return response;
   }
@@ -44,20 +42,22 @@ class UserProfileAPis {
     UserProfileModel? userProfileModel,
     File? file,
   }) async {
-    final response = await dioClient.put('${Endpoints.userprofile}${userProfileModel?.id}',
-        data: FormData.fromMap({
-          'id': userProfileModel?.id,
-          'user': userProfileModel?.user,
-          'intro': userProfileModel?.intro,
-          if (file != null) 'image': await MultipartFile.fromFile(file.path),
-        }));
+    final response =
+        await dioClient.put('${Endpoints.userprofile}${userProfileModel?.id}',
+            data: FormData.fromMap({
+              'id': userProfileModel?.id,
+              'user': userProfileModel?.user_id,
+              'intro': userProfileModel?.intro,
+              if (file != null)
+                'image': await MultipartFile.fromFile(file.path),
+            }));
     return response;
   }
 
   Future<Map<String, dynamic>?> deleteUserProfile(
-    UserProfileModel? userProfileModel
-  ) async {
-    final response = await dioClient.delete('${Endpoints.userprofile}${userProfileModel?.id}',
+      UserProfileModel? userProfileModel) async {
+    final response = await dioClient.delete(
+        '${Endpoints.userprofile}${userProfileModel?.id}',
         data: userProfileModel?.toJson());
     return response;
   }

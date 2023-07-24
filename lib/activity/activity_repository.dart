@@ -7,8 +7,8 @@ class ActivityRepository {
   ActivityRepository(this.activityAPis);
   final ActivityAPis activityAPis;
 
-  Future<PaginatedModel<ActivityModel>>? getActivities() async {
-    final response = await activityAPis.getActivities();
+  Future<PaginatedModel<ActivityModel>>? getActivities({int? task}) async {
+    final response = await activityAPis.getActivities(task: task);
     return PaginatedModel(
       lastPage: response?['data']['last_page'] as int,
       links: Links.fromJson(response?['data']['links'] as Map<String, dynamic>),

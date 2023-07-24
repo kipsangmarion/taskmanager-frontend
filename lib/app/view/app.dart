@@ -16,6 +16,7 @@ import 'package:taskmanager_frontend/task/create_update_delete_bloc/create_updat
 import 'package:taskmanager_frontend/task/retrieve_tasks_bloc/retrieve_tasks_bloc.dart';
 import 'package:taskmanager_frontend/task/task_repository.dart';
 import 'package:taskmanager_frontend/user_profile/create_update_delete_bloc/create_update_delete_user_profile_bloc.dart';
+import 'package:taskmanager_frontend/user_profile/user_bloc/user_bloc.dart';
 import 'package:taskmanager_frontend/user_profile/user_profile_repository.dart';
 
 class App extends StatelessWidget {
@@ -25,6 +26,15 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) =>
+              UserBloc(userProfileRepository: getIt<UserProfileRepository>()),
+        ),
+
+        BlocProvider(
+          create: (context) =>
+              RetrieveTasksBloc(taskRepository: getIt<TaskRepository>()),
+        ),
         // Given that we need an instance of this blocs gloablly we initialize them here
         BlocProvider(
           create: (context) =>
