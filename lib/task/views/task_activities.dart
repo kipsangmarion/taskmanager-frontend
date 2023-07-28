@@ -7,10 +7,10 @@ import 'package:taskmanager_frontend/activity/views/activity_page.dart';
 import 'package:taskmanager_frontend/di/service_locator.dart';
 import 'package:taskmanager_frontend/models/task/task_model.dart';
 
-class TaskActivitesPage extends StatelessWidget {
+class TaskActivitiesPage extends StatelessWidget {
   final TaskModel? taskModel;
 
-  const TaskActivitesPage({super.key, required this.taskModel});
+  const TaskActivitiesPage({super.key, required this.taskModel});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class TaskActivitiesPageView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Task Activities'),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
             context,
@@ -44,37 +44,41 @@ class TaskActivitiesPageView extends StatelessWidget {
             ),
           );
         },
-        child: Icon(Icons.add),
+        backgroundColor: Colors.blueGrey.shade200,
+        icon: const Icon(Icons.add), label: const Text('new'),
       ),
       body: BlocBuilder<RetrieveActivitiesBloc, RetrieveActivitiesState>(
         builder: (context, state) {
           if (state is RetrieveActivitiesLoading) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator.adaptive(),
             );
           }
           if (state is RetrieveActivitiesEmpty) {
-            return Center(
+            return const Center(
               child: Text('Empty'),
             );
           }
           if (state is RetrieveActivitiesSuccess) {
             return ListView.builder(
+                padding: const EdgeInsets.all(15),
                 itemCount: state.activityModel?.length,
                 itemBuilder: (_, i) {
-                  return ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ActivityDetailsPage(
-                            activityModel: state.activityModel?[i],
+                  return Card(
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ActivityDetailsPage(
+                              activityModel: state.activityModel?[i],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    subtitle: Text(state.activityModel?[i].desc ?? ''),
-                    title: Text(state.activityModel?[i].title ?? ''),
+                        );
+                      },
+                      subtitle: Text(state.activityModel?[i].desc ?? ''),
+                      title: Text(state.activityModel?[i].title ?? ''),
+                    ),
                   );
                 });
           }

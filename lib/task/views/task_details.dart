@@ -14,36 +14,58 @@ class TaskDetailspage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(taskModel?.title ?? "")),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: Text(taskModel?.title ?? ""),
-              subtitle: Text(taskModel?.desc ?? ''),
+              title: Center(child: Text(taskModel?.desc ?? "", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),)),
+              // subtitle: Center(child: Text(taskModel?.desc ?? '', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),)),
             ),
-            Text('Content'),
-            Text(taskModel?.content ?? ""),
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: const Center(
+                child: Text(
+                    'Content',
+                    style: TextStyle(fontSize: 21, decoration: TextDecoration.underline),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 150,
+              width: double.infinity,
+              child: Card(
+                  child: Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Text(taskModel?.content ?? "")
+                  ),
+              ),
+            ),
             ListTile(
               title: Text(DateFormat.MMMMEEEEd()
                   .format(taskModel?.actual_start_date ?? DateTime.now())),
-              subtitle: Text('Start Date'),
+              subtitle: const Text('Start Date'),
             ),
             ListTile(
               title: Text(DateFormat.MMMMEEEEd()
                   .format(taskModel?.actual_end_date ?? DateTime.now())),
-              subtitle: Text('End Date'),
+              subtitle: const Text('End Date'),
             ),
             ListTile(
               title: Text(DateFormat.MMMMEEEEd()
                   .format(taskModel?.planned_start_date ?? DateTime.now())),
-              subtitle: Text('Planned start Date'),
+              subtitle: const Text('Planned start Date'),
+            ),
+            const SizedBox(
+              height: 20,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const SizedBox(
                   width: 8,
                 ),
-                IconButton(
+                FloatingActionButton.extended(
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -54,11 +76,12 @@ class TaskDetailspage extends StatelessWidget {
                         ),
                       );
                     },
-                    icon: Icon(Icons.chat)),
+                    backgroundColor: Colors.blueGrey.shade200,
+                    icon: const Icon(Icons.chat), label: const Text('comments'),),
                 const SizedBox(
                   width: 8,
                 ),
-                IconButton(
+                FloatingActionButton.extended(
                     onPressed: () {
                       //TODO: TaskPage edit profile
                       Navigator.push(
@@ -71,23 +94,25 @@ class TaskDetailspage extends StatelessWidget {
                         ),
                       );
                     },
-                    icon: Icon(Icons.edit)),
+                    backgroundColor: Colors.blueGrey.shade200,
+                    icon: const Icon(Icons.edit), label: const Text('edit'),),
                 const SizedBox(
                   width: 8,
                 ),
-                IconButton(
+                FloatingActionButton.extended(
                     onPressed: () {
                       //TODO: TaskPage edit profile
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TaskActivitesPage(
+                          builder: (context) => TaskActivitiesPage(
                             taskModel: taskModel,
                           ),
                         ),
                       );
                     },
-                    icon: Icon(Icons.local_activity)),
+                    backgroundColor: Colors.blueGrey.shade200,
+                    icon: const Icon(Icons.local_activity), label: const Text('activities'),),
                 const SizedBox(
                   width: 8,
                 ),

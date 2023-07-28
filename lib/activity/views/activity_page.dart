@@ -7,7 +7,6 @@ import 'package:taskmanager_frontend/activity/create_update_delete_bloc/create_u
 import 'package:taskmanager_frontend/di/service_locator.dart';
 import 'package:taskmanager_frontend/models/activity/activity_model.dart';
 import 'package:taskmanager_frontend/models/task/task_model.dart';
-import 'package:taskmanager_frontend/user_profile/user_bloc/user_bloc.dart';
 
 import '../../comment/views/comment_page.dart';
 
@@ -97,7 +96,7 @@ class _ActivityPageViewState extends State<ActivityPageView> {
           },
           builder: (context, state) {
             if (state is CreateUpdateDeleteActivityLoading) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator.adaptive(),
               );
             }
@@ -125,6 +124,7 @@ class _ActivityPageViewState extends State<ActivityPageView> {
                       const SizedBox(height: 16.0),
                       const Chip(
                         avatar: CircleAvatar(
+                          backgroundColor: Colors.blueGrey,
                           child: Text(
                             'New',
                             style: TextStyle(fontSize: 16),
@@ -180,7 +180,7 @@ class _ActivityPageViewState extends State<ActivityPageView> {
                         readOnly: !isEditMode,
                       ),
                       const SizedBox(height: 16.0),
-                      ElevatedButton(
+                      FloatingActionButton.extended(
                         onPressed: () {
                           if (isEditMode) {
                             saveActivity();
@@ -188,7 +188,8 @@ class _ActivityPageViewState extends State<ActivityPageView> {
                             toggleEditMode();
                           }
                         },
-                        child: Text(isEditMode ? 'Save' : 'Edit'),
+                        backgroundColor: Colors.blueGrey.shade200,
+                        icon: const Icon(Icons.save), label: const Text('save'),
                       ),
                       const SizedBox(height: 16.0),
                       Text(
@@ -206,11 +207,12 @@ class _ActivityPageViewState extends State<ActivityPageView> {
                         style: const TextStyle(fontSize: 16),
                       ),
                       const SizedBox(height: 16.0),
-                      ElevatedButton(
+                      FloatingActionButton.extended(
                         onPressed: () {
                           navigateToCommentPage();
                         },
-                        child: const Text('Comments'),
+                        backgroundColor: Colors.blueGrey.shade200,
+                        icon: const Icon(Icons.comment), label: const Text('comments'),
                       ),
                     ],
                   ),

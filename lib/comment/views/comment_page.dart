@@ -103,11 +103,17 @@ class _CommentPageViewState extends State<CommentPageView> {
                   }
                   if (state is RetrieveCommentsSuccess) {
                     return ListView.builder(
+                      padding: const EdgeInsets.all(15),
                       shrinkWrap: true,
                       itemCount: state.commentModel?.length,
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(state.commentModel?[index].content ?? ''),
+                        return Column(
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(state.commentModel?[index].content ?? ''),
+                            ),
+                            const Divider(),
+                          ],
                         );
                       },
                     );
@@ -138,11 +144,12 @@ class _CommentPageViewState extends State<CommentPageView> {
                       ),
                     ),
                     const SizedBox(width: 8.0),
-                    ElevatedButton(
+                    FloatingActionButton.extended(
                       onPressed: () {
                         createComment();
                       },
-                      child: const Text('Submit'),
+                      backgroundColor: Colors.blueGrey.shade200,
+                      icon: const Icon(Icons.send), label: const Text('submit'),
                     ),
                   ],
                 ),

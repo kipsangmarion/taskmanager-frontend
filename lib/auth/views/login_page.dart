@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                     // navigate to home screen
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (context) => HomePage(),
+                        builder: (context) => const HomePage(),
                       ),
                           (Route<dynamic> route) => false,
                     );

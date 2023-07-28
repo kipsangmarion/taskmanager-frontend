@@ -96,32 +96,48 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
+            const Divider(),
+            ListTile(
+              title: const Text('All'),
+              onTap: () {
+                // implement all
+                BlocProvider.of<RetrieveTasksBloc>(context)
+                    .add(const RetrieveUserTasks());
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(),
             ListTile(
               title: const Text('Urgent and Important'),
               onTap: () {
                 filterTasksByTag('UI');
               },
             ),
+            const Divider(),
             ListTile(
               title: const Text('Urgent but Not Important'),
               onTap: () {
                 filterTasksByTag('UNI');
               },
             ),
+            const Divider(),
             ListTile(
               title: const Text('Not Urgent but Important'),
               onTap: () {
                 filterTasksByTag('NUI');
               },
             ),
+            const Divider(),
             ListTile(
               title: const Text('Not Urgent and Not Important'),
               onTap: () {
                 filterTasksByTag('NUNI');
               },
             ),
+            const Divider(),
             ListTile(
               title: const Text('Log Out'),
+              leading: const Icon(Icons.logout),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushAndRemoveUntil(
@@ -131,7 +147,8 @@ class _HomePageState extends State<HomePage> {
                   (Route<dynamic> route) => false,
                 );
               },
-            )
+            ),
+            const Divider(),
           ],
         ),
       ),
@@ -145,20 +162,23 @@ class _HomePageState extends State<HomePage> {
           if (state is RetrieveTasksSuccess) {
             return SizedBox(
               child: ListView.builder(
+                padding: const EdgeInsets.all(15),
                 shrinkWrap: true,
                 itemCount: state.taskModel?.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TaskDetailspage(
-                              taskModel: state.taskModel?[index]),
-                        ),
-                      );
-                    },
-                    title: Text(state.taskModel?[index].title ?? ''),
+                  return Card(
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TaskDetailspage(
+                                taskModel: state.taskModel?[index]),
+                          ),
+                        );
+                      },
+                      title: Text(state.taskModel?[index].title ?? ''),
+                    ),
                   );
                 },
               ),
@@ -168,11 +188,12 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           navigateToTaskPage();
         },
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.blueGrey.shade200,
+        icon: const Icon(Icons.add), label: const Text('new'),
       ),
     );
   }

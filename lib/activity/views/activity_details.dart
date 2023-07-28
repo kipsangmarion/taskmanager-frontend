@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:taskmanager_frontend/models/activity/activity_model.dart';
 
 class ActivityDetailsPage extends StatelessWidget {
@@ -9,17 +8,28 @@ class ActivityDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Activity details')),
+      appBar: AppBar(title: Text(activityModel?.title ?? "")),
       body: Column(children: [
         ListTile(
-          title: Text(activityModel?.title ?? ""),
-          subtitle: Text(activityModel?.desc ?? ''),
+          title: Center(child: Text(activityModel?.desc ?? "", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),)),
+          // subtitle: Text(activityModel?.desc ?? ''),
         ),
-        Text('Content'),
-        Text(activityModel?.content ?? ""),
+        Container(
+            padding: const EdgeInsets.all(20),
+            child: const Center(child: Text('Content', style: TextStyle(fontSize: 21, decoration: TextDecoration.underline),)
+            )),
+        SizedBox(
+          height: 150,
+          width: double.infinity,
+          child: Card(
+            child: Container(
+                padding: const EdgeInsets.all(20),
+                child: Text(activityModel?.content ?? "")),
+          ),
+        ),
         ListTile(
-          title: Text(activityModel?.hours.toString() ?? ''),
-          subtitle: Text('Hours'),
+          title: const Text('Hours'),
+          subtitle: Text(activityModel?.hours.toString() ?? ''),
         ),
       ]),
     );

@@ -208,9 +208,11 @@ class _TaskPageViewState extends State<TaskPageView> {
                     ),
                     const SizedBox(height: 16.0),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         const Chip(
                           avatar: CircleAvatar(
+                            backgroundColor: Colors.blueGrey,
                             child: Text(
                               'New',
                               style: TextStyle(fontSize: 16),
@@ -279,7 +281,7 @@ class _TaskPageViewState extends State<TaskPageView> {
                       decoration: const InputDecoration(
                         labelText: 'Hours',
                       ),
-                      maxLines: 5,
+                      // maxLines: 5,
                       readOnly: !isEditMode,
                     ),
                     const SizedBox(height: 16.0),
@@ -400,7 +402,7 @@ class _TaskPageViewState extends State<TaskPageView> {
                       ),
                     ),
                     const SizedBox(height: 16.0),
-                    ElevatedButton(
+                    FloatingActionButton.extended(
                       onPressed: () {
                         if (isEditMode) {
                           saveTask();
@@ -408,14 +410,10 @@ class _TaskPageViewState extends State<TaskPageView> {
                           toggleEditMode();
                         }
                       },
-                      child: Text(isEditMode ? 'Save' : 'Edit'),
+                      backgroundColor: Colors.blueGrey.shade200,
+                      icon: const Icon(Icons.save), label: const Text('save'),
                     ),
                     const SizedBox(height: 16.0),
-                    Text(
-                      titleController.text,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                    const SizedBox(height: 8.0),
                     const Text(
                       'Status: New',
                       style: TextStyle(fontSize: 16),
@@ -425,67 +423,24 @@ class _TaskPageViewState extends State<TaskPageView> {
                       'Tag: $selectedTag',
                       style: const TextStyle(fontSize: 16),
                     ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      'Description: ${descriptionController.text}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      'Content: ${contentController.text}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
                     const SizedBox(height: 16.0),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        BlocBuilder<RetrieveActivitiesBloc,
-                            RetrieveActivitiesState>(
-                          builder: (context, state) {
-                            if (state is RetrieveActivitiesSuccess) {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: state.activityModel?.length,
-                                itemBuilder: (context, index) {
-                                  return Card(
-                                    child: ListTile(
-                                      title: Text(
-                                          state.activityModel?[index].title ??
-                                              ''),
-                                      subtitle: Text(
-                                          state.activityModel?[index].desc ??
-                                              ''),
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                            if (state is RetrieveActivitiesLoading) {
-                              return const Center(
-                                child: CircularProgressIndicator.adaptive(),
-                              );
-                            } else {
-                              return Container();
-                            }
+                        FloatingActionButton.extended(
+                          onPressed: () {
+                            navigateToActivityPage();
                           },
+                          backgroundColor: Colors.blueGrey.shade200,
+                          icon: const Icon(Icons.add), label: const Text('new activity'),
                         ),
-                        const SizedBox(width: 16.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            FloatingActionButton(
-                              onPressed: () {
-                                navigateToActivityPage();
-                              },
-                              child: const Icon(Icons.add),
-                            ),
-                            const SizedBox(height: 16.0),
-                            ElevatedButton(
-                              onPressed: () {
-                                navigateToCommentPage();
-                              },
-                              child: const Text('Comments'),
-                            ),
-                          ],
+                        const SizedBox(height: 16.0),
+                        FloatingActionButton.extended(
+                          onPressed: () {
+                            navigateToCommentPage();
+                          },
+                          backgroundColor: Colors.blueGrey.shade200,
+                          icon: const Icon(Icons.comment), label: const Text('comments'),
                         ),
                       ],
                     ),

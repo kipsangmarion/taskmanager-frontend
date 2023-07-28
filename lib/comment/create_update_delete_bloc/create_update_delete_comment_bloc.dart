@@ -1,10 +1,7 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:taskmanager_frontend/comment/comment_repository.dart';
 import 'package:taskmanager_frontend/models/comment/comment_model.dart';
-import 'package:taskmanager_frontend/models/task/task_model.dart';
 
 part 'create_update_delete_comment_event.dart';
 part 'create_update_delete_comment_state.dart';

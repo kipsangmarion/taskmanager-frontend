@@ -22,7 +22,7 @@ class RootScreen extends StatelessWidget {
 // nav to home page
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => HomePage(),
+              builder: (context) => const HomePage(),
             ),
                 (Route<dynamic> route) => false,
           );
