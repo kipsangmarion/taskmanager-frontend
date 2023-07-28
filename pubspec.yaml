@@ -43,6 +43,7 @@ dependencies:
   date_format:
   intl: any
   animated_login:
+  user_profile_avatar:
   bloc:
   dio:
   get_it:

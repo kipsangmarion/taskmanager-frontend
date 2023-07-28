@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: const InputDecoration(label: Text('Username')),
               ),
               const SizedBox(
-                height: 10,
+                height: 15,
               ),
               TextFormField(
                 controller: password,
@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: const InputDecoration(label: Text('Password')),
               ),
               const SizedBox(
-                height: 12,
+                height: 20,
               ),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: CircularProgressIndicator.adaptive(),
                     );
                   }
-                  return FilledButton(
+                  return FloatingActionButton.extended(
                     onPressed: () {
                       // validate all fields are not null
                       if (_formKey.currentState!.validate()) {
@@ -88,13 +88,20 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       }
                     },
-                    child: const Text('Login'),
+                    backgroundColor: Colors.blueGrey.shade200,
+                    icon: const Icon(Icons.login), label: const Text('Login'),
                   );
                 },
               ),
               const SizedBox(
-                height: 12,
+                height: 40,
               ),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
+                },
+                child: const Text('Don\'t have an account yet? Sign Up', style: TextStyle(color: Colors.blueGrey),),
+              )
             ]),
           ),
         ),

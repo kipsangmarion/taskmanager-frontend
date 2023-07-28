@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:taskmanager_frontend/user_profile/views/edit_user_profile_page.dart';
 import 'package:taskmanager_frontend/di/service_locator.dart';
 
 import 'package:taskmanager_frontend/user_profile/create_update_delete_bloc/create_update_delete_user_profile_bloc.dart';
@@ -30,25 +28,6 @@ class UserProfilePageView extends StatefulWidget {
 }
 
 class _UserProfilePageViewState extends State<UserProfilePageView> {
-  TextEditingController introductionController = TextEditingController();
-
-  late File selectedImage;
-
-  void selectImage() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      setState(() {
-        selectedImage = File(pickedImage.path);
-      });
-    }
-  }
-
-  void saveUserProfile() {
-    BlocProvider.of<CreateUpdateDeleteUserProfileBloc>(context)
-        .add(CreateUserProfile(file: selectedImage));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,85 +54,41 @@ class _UserProfilePageViewState extends State<UserProfilePageView> {
               if (state.profileStateStatus == ProfileStateStatus.success) {
                 return Column(
                   children: [
+                    const SizedBox(height: 25,),
+                    const CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.blueGrey,
+                      child: Icon(Icons.person),
+                    ),
                     ListTile(
-                      subtitle: const Text('Name'),
-                      title: Text(
+                      title: const Text('Name'),
+                      subtitle: Text(
                           "${state.userModel?.firstName} ${state.userModel?.lastName}"),
                     ),
                     ListTile(
-                      subtitle: const Text('Username'),
-                      title: Text("${state.userModel?.username} "),
+                      title: const Text('Username'),
+                      subtitle: Text("${state.userModel?.username} "),
                     ),
                     ListTile(
                       title: Text(state.userModel?.intro ?? ''),
                     ),
+                    const SizedBox(height: 30,),
+                    FloatingActionButton.extended(
+                      onPressed: () {
+                        //TODO: TaskPage edit profile
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const EditUserProfilePage(),
+                          ),
+                        );
+                      },
+                      backgroundColor: Colors.blueGrey.shade200,
+                      icon: const Icon(Icons.edit), label: const Text('edit'),),
                   ],
                 );
               }
               return const SizedBox();
-            },
-          ),
-          //TODO(move_edit_to_own_page) Move edit to its own page
-          BlocBuilder<CreateUpdateDeleteUserProfileBloc,
-              CreateUpdateDeleteUserProfileState>(
-            builder: (context, state) {
-              if (state is CreateUpdateDeleteUserProfileLoading) {
-                return const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                );
-              }
-              if (state is CreateUpdateDeleteUserProfileSuccess) {
-                final userProfile = state.userProfileModel;
-
-                // Initialize text fields with user profile data
-                introductionController.text = userProfile?.intro ?? '';
-
-                return Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        selectImage();
-                      },
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: selectedImage != null
-                              ? DecorationImage(
-                                  image: FileImage(selectedImage),
-                                  fit: BoxFit.cover,
-                                )
-                              : null,
-                        ),
-                        child: selectedImage == null
-                            ? const Icon(
-                                Icons.person,
-                                size: 60,
-                              )
-                            : null,
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    TextField(
-                      controller: introductionController,
-                      decoration: const InputDecoration(
-                        labelText: 'Introduction',
-                      ),
-                      maxLines: 5,
-                    ),
-                    const SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        saveUserProfile();
-                      },
-                      child: const Text('Save'),
-                    ),
-                  ],
-                );
-              } else {
-                return Container();
-              }
             },
           ),
         ],

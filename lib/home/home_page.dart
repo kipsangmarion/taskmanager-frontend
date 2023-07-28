@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       navigateToUserProfilePage();
                     },
-                    leading: const CircleAvatar(child: Icon(Icons.person)),
+                    leading: const CircleAvatar(backgroundColor: Colors.blueGrey,child: Icon(Icons.person),),
                     subtitle: Text(state.userModel?.intro ?? ''),
                     title: Text(
                         "${state.userModel?.firstName} ${state.userModel?.lastName}"),
@@ -98,6 +98,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const Divider(),
             ListTile(
+              leading: const Icon(Icons.all_inbox),
               title: const Text('All'),
               onTap: () {
                 // implement all
