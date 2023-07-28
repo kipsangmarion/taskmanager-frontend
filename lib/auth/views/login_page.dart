@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskmanager_frontend/auth/auth_bloc/auth_bloc.dart';
+import 'package:taskmanager_frontend/auth/views/register_page.dart';
 import 'package:taskmanager_frontend/home/home_page.dart';
 import 'package:taskmanager_frontend/models/user/auth_model.dart';
 
