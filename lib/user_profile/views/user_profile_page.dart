@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -55,11 +56,19 @@ class _UserProfilePageViewState extends State<UserProfilePageView> {
                 return Column(
                   children: [
                     const SizedBox(height: 25,),
-                    const CircleAvatar(
+                    (state.userModel?.image?.isNotEmpty ?? false)
+                        ? CircleAvatar(
                       radius: 60,
                       backgroundColor: Colors.blueGrey,
-                      child: Icon(Icons.person),
+                      backgroundImage: CachedNetworkImageProvider(state
+                          .userModel?.image! ??
+                          'https://avatars.dicebear.com/api/initials/${state.userModel?.firstName}.png'),
+                    )
+                        : const Icon(
+                      Icons.person,
+                      size: 60,
                     ),
+                    const SizedBox(height: 25,),
                     ListTile(
                       title: const Text('Name'),
                       subtitle: Text(

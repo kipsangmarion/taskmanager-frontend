@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -79,13 +80,21 @@ class _HomePageState extends State<HomePage> {
 
                 if (state.profileStateStatus == ProfileStateStatus.success) {
                   return ListTile(
+                    leading: (state.userModel?.image?.isNotEmpty ?? false)
+                        ? CircleAvatar(
+                      backgroundColor: Colors.blueGrey,
+                      backgroundImage: CachedNetworkImageProvider(state
+                          .userModel?.image! ??
+                          'https://avatars.dicebear.com/api/initials/${state.userModel?.firstName}.png'),
+                    )
+                        : const Icon(
+                      Icons.person,
+                      size: 60,
+                    ),
+                    title: Text("${state.userModel?.firstName} ${state.userModel?.lastName}"),
                     onTap: () {
                       navigateToUserProfilePage();
                     },
-                    leading: const CircleAvatar(backgroundColor: Colors.blueGrey,child: Icon(Icons.person),),
-                    subtitle: Text(state.userModel?.intro ?? ''),
-                    title: Text(
-                        "${state.userModel?.firstName} ${state.userModel?.lastName}"),
                   );
                 }
                 return ListTile(

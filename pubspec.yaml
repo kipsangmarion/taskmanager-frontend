@@ -44,6 +44,7 @@ dependencies:
   intl: any
   animated_login:
   user_profile_avatar:
+  cached_network_image:
   bloc:
   dio:
   get_it:
