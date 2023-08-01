@@ -424,25 +424,24 @@ class _TaskPageViewState extends State<TaskPageView> {
                       style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 16.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FloatingActionButton.extended(
-                          onPressed: () {
-                            navigateToActivityPage();
-                          },
-                          backgroundColor: Colors.blueGrey.shade200,
-                          icon: const Icon(Icons.add), label: const Text('new activity'),
-                        ),
-                        const SizedBox(height: 16.0),
-                        FloatingActionButton.extended(
-                          onPressed: () {
-                            navigateToCommentPage();
-                          },
-                          backgroundColor: Colors.blueGrey.shade200,
-                          icon: const Icon(Icons.comment), label: const Text('comments'),
-                        ),
-                      ],
+                    Center(
+                      child: FloatingActionButton.extended(
+                        onPressed: () {
+                          navigateToActivityPage();
+                        },
+                        backgroundColor: Colors.blueGrey.shade200,
+                        icon: const Icon(Icons.add), label: const Text('new activity'),
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Center(
+                      child: FloatingActionButton.extended(
+                        onPressed: () {
+                          navigateToCommentPage();
+                        },
+                        backgroundColor: Colors.blueGrey.shade200,
+                        icon: const Icon(Icons.comment), label: const Text('comments'),
+                      ),
                     ),
                   ],
                 ),

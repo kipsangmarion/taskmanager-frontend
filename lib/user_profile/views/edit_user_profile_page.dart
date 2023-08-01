@@ -2,111 +2,79 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_toastr/flutter_toastr.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taskmanager_frontend/di/service_locator.dart';
+import 'package:taskmanager_frontend/models/user_profile/user_profile_model.dart';
+import 'package:taskmanager_frontend/user_profile/user_profile_repository.dart';
 
 import '../create_update_delete_bloc/create_update_delete_user_profile_bloc.dart';
 
-class EditUserProfilePage extends StatefulWidget {
-  const EditUserProfilePage({super.key});
+class EditUserProfilePage extends StatelessWidget {
+  final UserProfileModel? userProfileModel;
+  const EditUserProfilePage({Key? key, this.userProfileModel}) : super(key: key);
 
   @override
-  State<EditUserProfilePage> createState() => _EditUserProfilePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CreateUpdateDeleteUserProfileBloc(
+          userProfileRepository: getIt<UserProfileRepository>()),
+      child: EditUserProfilePageView(userProfileModel: userProfileModel),
+    );
+  }
 }
 
-class _EditUserProfilePageState extends State<EditUserProfilePage> {
-  TextEditingController introductionController = TextEditingController();
+class EditUserProfilePageView extends StatefulWidget {
+  const EditUserProfilePageView({super.key, this.userProfileModel});
+  final UserProfileModel? userProfileModel;
 
-  late File selectedImage;
+  @override
+  State<EditUserProfilePageView> createState() => _EditUserProfilePageViewState();
+}
 
-  void saveUserProfile() {
-    BlocProvider.of<CreateUpdateDeleteUserProfileBloc>(context)
-        .add(CreateUserProfile(file: selectedImage));
-  }
-
-  void selectImage() async {
-    final pickedImage =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      setState(() {
-        selectedImage = File(pickedImage.path);
-      });
-    }
-  }
+class _EditUserProfilePageViewState extends State<EditUserProfilePageView> {
+  File? selectedImage;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Profile'),
+        title: const Text('Edit User Profile'),
       ),
-      body: Column(
-        children: [
-          BlocBuilder<CreateUpdateDeleteUserProfileBloc,
-              CreateUpdateDeleteUserProfileState>(
-            builder: (context, state) {
-              if (state is CreateUpdateDeleteUserProfileLoading) {
-                return const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                );
-              }
-              if (state is CreateUpdateDeleteUserProfileSuccess) {
-                final userProfile = state.userProfileModel;
+      body: BlocConsumer<CreateUpdateDeleteUserProfileBloc, CreateUpdateDeleteUserProfileState>
+        (
+        listener: (context, state){
+          if(state is CreateUpdateDeleteUserProfileSuccess) {
+            FlutterToastr.show('Success', context);
+            Navigator.of(context).pop();
+          }
+          if(state is CreateUpdateDeleteUserProfileError) {
+            Fluttertoast.showToast(msg: "an error has occurred");
+          }
+        },
+        builder: (context, state){
+          if (state is CreateUpdateDeleteUserProfileLoading) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
+          return Padding(
+              padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: (){
 
-                // Initialize text fields with user profile data
-                introductionController.text = userProfile?.intro ?? '';
-
-                return Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        selectImage();
-                      },
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: selectedImage != null
-                              ? DecorationImage(
-                            image: FileImage(selectedImage),
-                            fit: BoxFit.cover,
-                          )
-                              : null,
-                        ),
-                        child: selectedImage == null
-                            ? const Icon(
-                          Icons.person,
-                          size: 60,
-                        )
-                            : null,
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    TextField(
-                      controller: introductionController,
-                      decoration: const InputDecoration(
-                        labelText: 'Introduction',
-                      ),
-                      maxLines: 5,
-                    ),
-                    const SizedBox(height: 16.0),
-                    FloatingActionButton.extended(
-                      onPressed: () {
-                        saveUserProfile();
-                      },
-                      backgroundColor: Colors.blueGrey.shade200,
-                      icon: const Icon(Icons.save), label: const Text('save'),
-                    ),
-                  ],
-                );
-              } else {
-                return Container();
-              }
-            },
-          ),
-        ],
+                  },
+                ),
+                Form(child: Column()),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 }
+

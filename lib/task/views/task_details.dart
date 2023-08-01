@@ -99,25 +99,27 @@ class TaskDetailspage extends StatelessWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                FloatingActionButton.extended(
-                    onPressed: () {
-                      //TODO: TaskPage edit profile
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TaskActivitiesPage(
-                            taskModel: taskModel,
-                          ),
-                        ),
-                      );
-                    },
-                    backgroundColor: Colors.blueGrey.shade200,
-                    icon: const Icon(Icons.local_activity), label: const Text('activities'),),
-                const SizedBox(
-                  width: 8,
-                ),
               ],
-            )
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  //TODO: TaskPage edit profile
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TaskActivitiesPage(
+                        taskModel: taskModel,
+                      ),
+                    ),
+                  );
+                },
+                backgroundColor: Colors.blueGrey.shade200,
+                icon: const Icon(Icons.local_activity), label: const Text('activities'),),
+            ),
           ],
         ),
       ),
